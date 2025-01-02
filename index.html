@@ -406,6 +406,20 @@
                     <div class="invalid-feedback">Please enter a message in the textarea.</div>
                   </div>
                 
+                  <!-- New Section: Radio Buttons for WhatsApp Type -->
+                  <div class="col-12">
+                    <label class="form-label">Choose WhatsApp Type:</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="whatsappType" id="whatsappRegular" value="regular" checked>
+                      <label class="form-check-label" for="whatsappRegular">WhatsApp</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="whatsappType" id="whatsappBusiness" value="business">
+                      <label class="form-check-label" for="whatsappBusiness">WhatsApp Business</label>
+                    </div>
+                  </div>
+                  <!-- End of New Section -->
+                
                   <div class="col-12">
                     <button class="Mybtn" type="submit">Submit form</button>
                   </div>
@@ -525,12 +539,19 @@
   </script>
 
 <script>
-  $(function () {
+
+$(function () {
     // Define WhatsApp URLs for desktop and mobile
-    const hrefs = [
-      "https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}",
-      "https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}"
-    ];
+    const hrefs = {
+      regular: [
+        "https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}",
+        "https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}"
+      ],
+      business: [
+        "intent://send?phone=${phoneNumber}&text=${encodedMessage}#Intent;scheme=smsto;package=com.whatsapp.w4b;end",
+        "intent://send?phone=${phoneNumber}&text=${encodedMessage}#Intent;scheme=smsto;package=com.whatsapp.w4b;end"
+      ]
+    };
 
     // Handle form submission
     $("#contactForm").on("submit", function (event) {
@@ -544,7 +565,7 @@
       const message = $("#validationTextarea").val();
 
       // Construct the WhatsApp message
-      let whatsappMessage = `Hello, I have an enquiry:\n\n`;
+      let whatsappMessage = "Hello, I have an enquiry:\n\n";
       whatsappMessage += `Name: ${name}\n`;
       whatsappMessage += `Email: ${email}\n`;
       whatsappMessage += `Phone: ${phone || "Not provided"}\n`;
@@ -556,14 +577,18 @@
 
       // Replace placeholders in URLs
       const phoneNumber = "9924408987"; // Replace with your WhatsApp number
-      const desktopUrl = hrefs[0].replace("${phoneNumber}", phoneNumber).replace("${encodedMessage}", encodedMessage);
-      const mobileUrl = hrefs[1].replace("${phoneNumber}", phoneNumber).replace("${encodedMessage}", encodedMessage);
+      const isMobile = $(window).width() < 767.98;
 
-      // Determine URL based on device width
-      const whatsappUrl = $(window).width() < 767.98 ? mobileUrl : desktopUrl;
+      // Get selected WhatsApp type
+      const selectedApp = $("input[name='whatsappType']:checked").val(); // Get the value of the checked radio button
+      const links = hrefs[selectedApp];
+      const whatsappUrl = isMobile ? links[1] : links[0];
+
+      // Replace placeholders in the chosen URL
+      const finalUrl = whatsappUrl.replace("${phoneNumber}", phoneNumber).replace("${encodedMessage}", encodedMessage);
 
       // Redirect to the appropriate WhatsApp URL
-      window.open(whatsappUrl, "_blank");
+      window.open(finalUrl, "_blank");
     });
   });
 </script>
