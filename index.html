@@ -620,106 +620,88 @@
                 </div>
 
                 <div class="col-lg-6">
-                  <form
-                    class="row g-3 needs-validation"
-                    id="contactForm"
-                    novalidate
-                  >
+                  <form class="row g-3 needs-validation" id="contactForm" novalidate>
                     <div class="col-md-6">
-                      <label for="validationCustom01" class="form-label"
-                        >Name</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="validationCustom01"
-                        required
-                      />
-                      <div class="invalid-feedback">
-                        Please enter your name.
-                      </div>
+                      <label for="validationCustom01" class="form-label">Name</label>
+                      <input type="text" class="form-control" id="validationCustom01" required />
+                      <div class="invalid-feedback">Please enter your name.</div>
                     </div>
-
+                  
                     <div class="col-md-6">
-                      <label for="validationCustomUsername" class="form-label"
-                        >Email</label
-                      >
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="validationCustomUsername"
-                        required
-                      />
+                      <label for="validationCustomUsername" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="validationCustomUsername" required />
                       <div class="invalid-feedback">Please enter an email.</div>
                     </div>
-
+                  
                     <div class="col-md-6">
-                      <label for="PhoneNo" class="form-label"
-                        >Phone No. (Optional)</label
-                      >
+                      <label for="PhoneNo" class="form-label">Phone No. (Optional)</label>
                       <input type="number" class="form-control" id="PhoneNo" />
                     </div>
-
+                  
                     <div class="col-md-6">
-                      <label for="validationCustom02" class="form-label"
-                        >Subject</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="validationCustom02"
-                        required
-                      />
-                      <div class="invalid-feedback">
-                        Please enter the subject.
-                      </div>
+                      <label for="validationCustom02" class="form-label">Subject</label>
+                      <input type="text" class="form-control" id="validationCustom02" required />
+                      <div class="invalid-feedback">Please enter the subject.</div>
                     </div>
-
+                  
                     <div class="mb-3">
-                      <label for="validationTextarea" class="form-label"
-                        >Message</label
-                      >
+                      <label for="validationTextarea" class="form-label">Message</label>
                       <textarea
                         class="form-control"
                         id="validationTextarea"
                         placeholder="Type your message"
                         required
                       ></textarea>
-                      <div class="invalid-feedback">
-                        Please enter a message in the textarea.
-                      </div>
+                      <div class="invalid-feedback">Please enter a message in the textarea.</div>
                     </div>
-
-                    <!-- New Section: Radio Buttons for WhatsApp Type -->
-                    <button id="whatsappButton" class="Mybtn">
-                      Contact via WhatsApp
+                  
+                    <!-- Modal Launcher for Mobile -->
+                    <button
+                      type="button"
+                      class="btn Mybtn d-table d-md-none"
+                      data-bs-toggle="modal"
+                      data-bs-target="#whatsappButton"
+                    >
+                      Choose WhatsApp
                     </button>
-
-                    <!-- Modal for selection -->
-                    <div id="whatsappModal" class="mymodal"  style="display: none;">
-                      <div class="mymodal-content">
-                        <h4>Select WhatsApp Type</h4>
-                        <div class="options">
-                          <button id="whatsappStandard" class="option">
-                            <img src="whatsapp-icon.png" alt="WhatsApp" />
-                            WhatsApp
-                          </button>
-                          <button id="whatsappBusiness" class="option">
-                            <img
-                              src="whatsapp-business-icon.png"
-                              alt="WhatsApp Business"
-                            />
-                            WhatsApp Business
-                          </button>
+                  
+                    <!-- WhatsApp Modal -->
+                    <div
+                      class="modal fade"
+                      id="whatsappButton"
+                      tabindex="-1"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title text" id="exampleModalLabel">Select WhatsApp Type</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body text-center">
+                            <div class="options">
+                              <button id="whatsappStandard" class="btn option">
+                                <img src="image/whatsapp-icon.png" alt="WhatsApp" />        
+                              </button>
+                              <button id="whatsappBusiness" class="btn option">
+                                <img
+                                  src="image/whatsapp-business-icon.png"
+                                  alt="WhatsApp Business"
+                                />        
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <!-- End of New Section -->
-
-                    <div class="col-12">
+                  
+                    <!-- Submit Button for Desktop -->
+                    <div class="col-12 d-none d-md-table">
                       <button class="Mybtn" type="submit">Submit form</button>
                     </div>
                   </form>
+                  
                 </div>
               </div>
 
@@ -839,83 +821,138 @@
       // Typing animation javascript End
     </script>
 
-    <script>
-  //   $(function () {
-  //   // Define WhatsApp URLs for desktop and mobile
-  //   const hrefs = [
-  //     "https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}",
-  //     "https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}"
-  //   ];
+<script>
+  $(document).ready(function () {
+  // Debounce function to limit the execution frequency of resize events
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      const context = this;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
 
-  //   // Handle form submission
-  //   $("#contactForm").on("submit", function (event) {
-  //     event.preventDefault(); // Prevent default form submission behavior
+  // Function to initialize the appropriate JavaScript logic based on screen size
+  function initializeLogic() {
+    const isMobile = $(window).width() <= 767.98;
 
-  //     // Get form input values
-  //     const name = $("#validationCustom01").val();
-  //     const email = $("#validationCustomUsername").val();
-  //     const phone = $("#PhoneNo").val();
-  //     const subject = $("#validationCustom02").val();
-  //     const message = $("#validationTextarea").val();
+    if (isMobile) {
+      function initializeLogic() {
+    const phoneNumber = "9924408987";
+    const standardWhatsAppUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=`;
+    const businessWhatsAppUrl = `intent://send?phone=${phoneNumber}#Intent;scheme=smsto;package=com.whatsapp.w4b;end`;
 
-  //     // Construct the WhatsApp message
-  //     let whatsappMessage = `Hello, I have an enquiry:\n\n`;
-  //     whatsappMessage += `Name: ${name}\n`;
-  //     whatsappMessage += `Email: ${email}\n`;
-  //     whatsappMessage += `Phone: ${phone || "Not provided"}\n`;
-  //     whatsappMessage += `Subject: ${subject}\n`;
-  //     whatsappMessage += `Message: ${message}`;
+    // Handle WhatsApp Standard Button Click
+    $("#whatsappStandard").off("click").on("click", function () {
+      if (validateForm()) {
+        const message = constructWhatsAppMessage();
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`${standardWhatsAppUrl}${encodedMessage}`, "_blank");
+      }
+    });
 
-  //     // Encode the message for the URL
-  //     const encodedMessage = encodeURIComponent(whatsappMessage);
+    // Handle WhatsApp Business Button Click
+    $("#whatsappBusiness").off("click").on("click", function () {
+      if (validateForm()) {
+        const message = constructWhatsAppMessage();
+        const encodedMessage = encodeURIComponent(message);
+        window.open(`${businessWhatsAppUrl}${encodedMessage}`, "_blank");
+      }
+    });
+  }
 
-  //     // Replace placeholders in URLs
-  //     const phoneNumber = "9924408987"; // Replace with your WhatsApp number
-  //     const desktopUrl = hrefs[0].replace("${phoneNumber}", phoneNumber).replace("${encodedMessage}", encodedMessage);
-  //     const mobileUrl = hrefs[1].replace("${phoneNumber}", phoneNumber).replace("${encodedMessage}", encodedMessage);
-
-  //     // Determine URL based on device width
-  //     const whatsappUrl = $(window).width() < 767.98 ? mobileUrl : desktopUrl;
-
-  //     // Redirect to the appropriate WhatsApp URL
-  //     window.open(whatsappUrl, "_blank");
-  //   });
-  // });
-
-
-  $(function () {
-  // Define WhatsApp URLs
-
-  const phoneNumber1 = "9924408987";
-  const standardWhatsAppUrl = `https://wa.me/${phoneNumber1}`;
-  const businessWhatsAppUrl = `intent://send?phone=${phoneNumber1}#Intent;scheme=smsto;package=com.whatsapp.w4b;end`;
-
-  // Show modal on button click
-  $("#whatsappButton").on("click", function () {
-    $("#whatsappModal").fadeIn();
-
-      // Close modal when clicking outside the content
-  $(document).on("click", function (event) {
-    if (!$(event.target).closest(".mymodal-content").length) {
-      $("#whatsappModal").fadeOut();
+  // Form Validation Function
+  function validateForm() {
+    const form = document.querySelector("#contactForm");
+    if (!form.checkValidity()) {
+      form.classList.add("was-validated");
+      return false;
     }
-  });
+    return true;
+  }
 
-  });
+  // Construct WhatsApp Message
+  function constructWhatsAppMessage() {
+    const name = $("#validationCustom01").val();
+    const email = $("#validationCustomUsername").val();
+    const phone = $("#PhoneNo").val();
+    const subject = $("#validationCustom02").val();
+    const message = $("#validationTextarea").val();
 
-  // Handle selection for WhatsApp
-  $("#whatsappStandard").on("click", function () {
-    window.open(standardWhatsAppUrl, "_blank");
-    $("#whatsappModal").fadeOut();
-  });
+    return `Hello, I have an enquiry:\n\nName: ${name}\nEmail: ${email}\nPhone: ${
+      phone || "Not provided"
+    }\nSubject: ${subject}\nMessage: ${message}`;
+  }
 
-  // Handle selection for WhatsApp Business
-  $("#whatsappBusiness").on("click", function () {
-    window.open(businessWhatsAppUrl, "_blank");
-    $("#whatsappModal").fadeOut();
-  });
+  // Initialize logic on page load
+  initializeLogic();
+    } else {
+      console.log("Initializing Desktop Logic");
 
+      // Define WhatsApp URLs
+      const phoneNumber = "9924408987";
+      const hrefs = [
+        `https://web.whatsapp.com/send?phone=${phoneNumber}&text=`,
+        `https://api.whatsapp.com/send?phone=${phoneNumber}&text=`,
+      ];
+
+      // Handle form submission with Bootstrap validation
+      $("#contactForm").off("submit").on("submit", function (event) {
+        const form = this;
+
+        // Bootstrap validation
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+          form.classList.add("was-validated");
+          return;
+        }
+
+        event.preventDefault(); // Prevent default form submission behavior
+
+        // Get form input values
+        const name = $("#validationCustom01").val();
+        const email = $("#validationCustomUsername").val();
+        const phone = $("#PhoneNo").val();
+        const subject = $("#validationCustom02").val();
+        const message = $("#validationTextarea").val();
+
+        // Construct the WhatsApp message
+        let whatsappMessage = `Hello, I have an enquiry:\n\n`;
+        whatsappMessage += `Name: ${name}\n`;
+        whatsappMessage += `Email: ${email}\n`;
+        whatsappMessage += `Phone: ${phone || "Not provided"}\n`;
+        whatsappMessage += `Subject: ${subject}\n`;
+        whatsappMessage += `Message: ${message}`;
+
+        // Encode the message for the URL
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+
+        // Determine the appropriate URL
+        const desktopUrl = `${hrefs[0]}${encodedMessage}`;
+        const mobileUrl = `${hrefs[1]}${encodedMessage}`;
+        const whatsappUrl = $(window).width() < 767.98 ? mobileUrl : desktopUrl;
+
+        // Redirect to the appropriate WhatsApp URL
+        window.open(whatsappUrl, "_blank");
+      });
+    }
+  }
+
+  // Initialize the logic on page load
+  initializeLogic();
+
+  // Reinitialize logic on window resize with debounce
+  $(window).on(
+    "resize",
+    debounce(function () {
+      initializeLogic();
+    }, 200)
+  );
 });
-    </script>
+
+</script>
+
   </body>
 </html>
