@@ -841,7 +841,7 @@
       function initializeLogic() {
     const phoneNumber = "9924408987";
     const standardWhatsAppUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=`;
-    const businessWhatsAppUrl = `intent://send?phone=${phoneNumber}#Intent;scheme=smsto;package=com.whatsapp.w4b;end`;
+    const businessWhatsAppUrl = `intent://send?phone=${phoneNumber}&text=`;
 
     // Handle WhatsApp Standard Button Click
     $("#whatsappStandard").off("click").on("click", function () {
@@ -857,7 +857,7 @@
       if (validateForm()) {
         const message = constructWhatsAppMessage();
         const encodedMessage = encodeURIComponent(message);
-        window.open(`${businessWhatsAppUrl}${encodedMessage}`, "_blank");
+        window.open(`${businessWhatsAppUrl}${encodedMessage}#Intent;scheme=smsto;package=com.whatsapp.w4b;end`, "_blank");
       }
     });
   }
